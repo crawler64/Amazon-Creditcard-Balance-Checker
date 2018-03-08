@@ -15,6 +15,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.options import Options
 
 
 # cc.py -d 1/True turns Debug mode on. 
@@ -42,15 +43,18 @@ def init_conf():
 	conf.read(os.path.join(project_dir, 'config.ini'))
 	
 	# Read config Settings - Do not change URLs if no necessary !
-	root_directory = conf.get("dirs", "root_dir")
 	# This is a function attribute, hence i can access it from "outside"
 	init_conf.cc_username = conf.get("auth", "username")
 	init_conf.cc_password = conf.get("auth", "password")
 	init_conf.cc_url = conf.get("auth", "url")
 	
 def init_driver():
-	# TODO : change this if you have geckodriver in PATH !
-    driver = webdriver.Firefox(executable_path=r'C:\Program Files\geckodriver-v0.19.1-win64\geckodriver.exe')
+	# TODO : change this if you have geckodriver in PATH ! (Windows version)
+    #driver = webdriver.Firefox(executable_path=r'C:\Program Files\geckodriver-v0.19.1-win64\geckodriver.exe')
+    #Raspbian Version (Stretch) - chromedriver needed!!
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    driver = webdriver.Chrome(chrome_options=chrome_options)
     driver.wait = WebDriverWait(driver, 5)
     return driver
 
