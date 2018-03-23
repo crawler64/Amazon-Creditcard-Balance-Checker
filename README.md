@@ -15,7 +15,7 @@ NOTE: You need to change the path to your geckodriver in the cc.py script. If yo
 #### REQUIREMENTS
 
 - Python 2.7
-- selenium - `sudo apt-get install mechanize`
+- selenium - `sudo apt-get install selenium`
 
 
 Important Disclaimer: Since the credentials are in plaintext in your config, i'll take no responsebility for that. This programm is only a proof-of-concept. Don't use it, if you are not able to keep your data safe from data theft. 
