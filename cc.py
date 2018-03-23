@@ -53,7 +53,9 @@ def init_driver():
     #driver = webdriver.Firefox(executable_path=r'C:\Program Files\geckodriver-v0.19.1-win64\geckodriver.exe')
     #Raspbian Version (Stretch) - chromedriver needed!!
     chrome_options = Options()
+    chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-gpu")
     driver = webdriver.Chrome(chrome_options=chrome_options)
     driver.wait = WebDriverWait(driver, 5)
     return driver
