@@ -6,11 +6,14 @@ Set the following in the file `config.ini` before running the script
 
 - `cc_username` : your_Creditcard_number
 - `cc_password` : your_Password
-- `url` : URL for moodle authentication / Where you type in your credentials
+- `url` : URL where you type in your credentials
 
 
 NOTE: You need to change the path to your geckodriver in the cc.py script. If you've already included geckodriver path to your PATH, than just erase the argument in the bracket.
 
+#### IMPORTANT
+
+Due to the new amazon LBB interface, you need to authenticate your machine first. This can be done by running the cc_auth.py script. You need to enter you credentials and logout again. This saves an cookie in a userfolder of selenium. This needs to be done, otherwise amazon lbb will repeat to ask for authentication for "this device".
 
 #### REQUIREMENTS
 
