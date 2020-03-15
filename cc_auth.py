@@ -13,7 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 chrome_options = Options()
-#if you want to change your userfolder, please do so: But you also need to change this in the cc_check.py
+#if you want to change your userfolder, please do so: But you also need to change this in the cc.py
 chrome_options.add_argument("user-data-dir=selenium") 
 chrome_options.add_argument("--no-sandbox")
 driver = webdriver.Chrome(chrome_options=chrome_options)
