@@ -88,7 +88,7 @@ if __name__ == "__main__":
 	textes = textes.replace("€","")
 	#format string
 	myvalue = textes.replace(".","")
-	myvalue = myvalue.replace(",",".")
+	myvalue = "-" + myvalue.replace(",",".")
 	myBalanceInfo = 'Amazon:\t\n' + "CCard: " + myvalue + " EUR"
 	driver.get("https://amazon.lbb.de/logout")
 	time.sleep(1)
