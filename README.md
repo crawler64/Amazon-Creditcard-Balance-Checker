@@ -4,7 +4,7 @@ The `cc.py` script opens up a selenium browser instance and gets your current ba
 
 Set the following in the file `config.ini` before running the script
 
-- `cc_username` : your_Creditcard_number
+- `cc_username` : your_LBB_username
 - `cc_password` : your_Password
 - `url` : URL where you type in your credentials
 
