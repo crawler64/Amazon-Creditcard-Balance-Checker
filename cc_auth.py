@@ -1,4 +1,4 @@
-# RUN THIS FILE FIRST BEFORE YOU USE cc_check.py
+# RUN THIS FILE FIRST BEFORE YOU USE cc.py
 # ENTER YOU Credentials in popup of Chromium
 
 WebsiteURL = 'https://amazon.lbb.de/security/login'
