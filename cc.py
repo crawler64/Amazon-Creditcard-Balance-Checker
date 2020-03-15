@@ -56,6 +56,8 @@ def init_driver():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
+    #init user-folder for cookies
+    chrome_options.add_argument("user-data-dir=selenium")
     driver = webdriver.Chrome(chrome_options=chrome_options)
     driver.wait = WebDriverWait(driver, 5)
     return driver
@@ -64,13 +66,11 @@ def init_driver():
  
 def lookup(driver, username, password):
     driver.get(init_conf.cc_url)
+    time.sleep(5)
     try:
-		box_user = driver.wait.until(EC.presence_of_element_located(
-			(By.NAME, "user")))
-		box_pw = driver.wait.until(EC.presence_of_element_located(
-			(By.NAME, "password")))
-		button = driver.wait.until(EC.element_to_be_clickable(
-			(By.NAME, "bt_LOGON")))
+		box_user = driver.find_element(By.XPATH, "//*[@id='mat-input-0']")
+		box_pw = driver.find_element(By.XPATH, "//*[@id='mat-input-1']")
+		button = driver.find_element(By.XPATH, "//*[@id='content-container']/ng-component/kkb-ux-tile-container/div/div/div/div[2]/div[1]/form/div[2]/button")
 		box_user.send_keys(username)
 		box_pw.send_keys(password)
 		button.click()
@@ -83,14 +83,14 @@ if __name__ == "__main__":
 	driver = init_driver()
 	init_conf()
 	lookup(driver, init_conf.cc_username, init_conf.cc_password)
-	time.sleep(2)
-	textes = driver.find_elements_by_class_name('tabtext')
-	# prints current balance
-	print textes[1].text + textes[2].text
-	#find logout button
-	link_logout = driver.find_element_by_id("nav.logout")
-	
-	link_logout.click()
+	time.sleep(5)
+	textes = driver.find_element(By.XPATH,"//*[@id='speedometerHoleTextContainer']/div/div[2]").text
+	textes = textes.replace("€","")
+	#format string
+	myvalue = textes.replace(".","")
+	myvalue = myvalue.replace(",",".")
+	myBalanceInfo = 'Amazon:\t\n' + "CCard: " + myvalue + " EUR"
+	driver.get("https://amazon.lbb.de/logout")
 	time.sleep(1)
 	driver.quit()
 
