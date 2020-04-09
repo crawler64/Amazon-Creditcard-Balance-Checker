@@ -84,11 +84,19 @@ if __name__ == "__main__":
 	init_conf()
 	lookup(driver, init_conf.cc_username, init_conf.cc_password)
 	time.sleep(5)
-	textes = driver.find_element(By.XPATH,"//*[@id='speedometerHoleTextContainer']/div/div[2]").text
-	textes = textes.replace("€","")
-	#format string
-	myvalue = textes.replace(".","")
-	myvalue = "-" + myvalue.replace(",",".")
+	
+	checkString = driver.find_elements_by_xpath("//*[@id='speedometerHoleTextContainer']/div/div[1]")[1].text.encode('utf-8')
+	if(str.find(checkString,"Guthaben") != -1):
+		textes = driver.find_elements_by_xpath("//*[@id='speedometerHoleTextContainer']/div/div[2]")[1].text
+		textes = textes.replace("€","")
+		myvalue = textes.replace(".","")
+		myvalue = myvalue.replace(",",".")
+	else:
+		textes = driver.find_element(By.XPATH,"//*[@id='speedometerHoleTextContainer']/div/div[2]").text
+		textes = textes.replace("€","")
+		myvalue = textes.replace(".","")
+		myvalue = "-" + myvalue.replace(",",".")
+	
 	myBalanceInfo = 'Amazon:\t\n' + "CCard: " + myvalue + " EUR"
 	driver.get("https://amazon.lbb.de/logout")
 	time.sleep(1)
