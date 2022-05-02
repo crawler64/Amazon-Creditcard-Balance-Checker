@@ -17,7 +17,7 @@ Due to the new amazon LBB interface, you need to authenticate your machine first
 
 #### REQUIREMENTS
 
-- Python 2.7
+- Python 3.x
 - selenium - `sudo apt-get install selenium`
 
 
