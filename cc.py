@@ -1,14 +1,16 @@
 # encoding=utf8  
+
+#from importlib import reload
 import sys, getopt
 
-reload(sys)  
-sys.setdefaultencoding('utf8')
+#reload(sys)  
+#sys.setdefaultencoding('utf8')
 
 import re
 import ssl
 import os
 import os.path
-from ConfigParser import ConfigParser
+import configparser
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -23,22 +25,21 @@ from selenium.webdriver.chrome.options import Options
 
 
 def main(argv):
-   Debug = False
-   try:
-      opts, args = getopt.getopt(argv,"d:",["dbgpara="])
-	
-   except getopt.GetoptError:
+	Debug = False
+	try:
+		opts, args = getopt.getopt(argv,"d:",["dbgpara="])
+	except getopt.GetoptError:
 		Debug = False
 		return Debug
-	
-   for opt, arg in opts:
-	if opt in ("-d","--dbgpara"):
-		if (arg == 'True') or (arg == '1'):
-			Debug = True
-	return Debug
+	finally:	
+		for opt, arg in opts:
+			if opt in ("-d","--dbgpara"):
+				if (arg == 'True') or (arg == '1'):
+					Debug = True
+		return Debug
  
 def init_conf():
-	conf = ConfigParser()
+	conf = configparser.ConfigParser()
 	project_dir = os.path.dirname(os.path.abspath(__file__))
 	conf.read(os.path.join(project_dir, 'config.ini'))
 	
@@ -65,17 +66,17 @@ def init_driver():
 
  
 def lookup(driver, username, password):
-    driver.get(init_conf.cc_url)
-    time.sleep(5)
-    try:
+	driver.get(init_conf.cc_url)
+	time.sleep(5)
+	try:
 		box_user = driver.find_element(By.XPATH, "//*[@id='mat-input-0']")
 		box_pw = driver.find_element(By.XPATH, "//*[@id='mat-input-1']")
-		button = driver.find_element(By.XPATH, "//*[@id='content-container']/ng-component/kkb-ux-tile-container/div/div/div/div[2]/div[1]/form/div[2]/button")
+		button = driver.find_element(By.XPATH, "//*[@class='login-container']/form/div[2]/button")
 		box_user.send_keys(username)
 		box_pw.send_keys(password)
 		button.click()
-    except TimeoutException:
-        print("Box or Button not found in google.com")
+	except TimeoutException:
+		print("Box or Button not found in google.com")
  
  
 if __name__ == "__main__":
@@ -85,20 +86,22 @@ if __name__ == "__main__":
 	lookup(driver, init_conf.cc_username, init_conf.cc_password)
 	time.sleep(5)
 	
-	checkString = driver.find_elements_by_xpath("//*[@id='speedometerHoleTextContainer']/div/div[1]")[1].text.encode('utf-8')
-	if(str.find(checkString,"Guthaben") != -1):
-		textes = driver.find_elements_by_xpath("//*[@id='speedometerHoleTextContainer']/div/div[2]")[1].text
+	checkString = driver.find_elements(By.XPATH,"//*[@class='dialplate-wheel__content__explainer ng-star-inserted']")[1].text
+	if(str.find(checkString,"Verbraucht") != -1):
+		textes = driver.find_elements(By.XPATH,"//*[@class='dialplate-wheel__content__small-number ng-star-inserted']")[0].text
 		textes = textes.replace("€","")
 		myvalue = textes.replace(".","")
 		myvalue = myvalue.replace(",",".")
 	else:
-		textes = driver.find_element(By.XPATH,"//*[@id='speedometerHoleTextContainer']/div/div[2]").text
+		textes = driver.find_element(By.XPATH,"//*[@class='dialplate-wheel__content__small-number ng-star-inserted']").text
 		textes = textes.replace("€","")
 		myvalue = textes.replace(".","")
 		myvalue = "-" + myvalue.replace(",",".")
 	
 	myBalanceInfo = 'Amazon:\t\n' + "CCard: " + myvalue + " EUR"
-	driver.get("https://amazon.lbb.de/logout")
+	print(myBalanceInfo)
+	time.sleep(2)
+	driver.get("https://amazon.lbb.de/security/logout")
 	time.sleep(1)
 	driver.quit()
 
